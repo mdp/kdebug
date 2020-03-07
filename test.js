@@ -1,6 +1,9 @@
 const execSync = require("child_process").execSync;
 const bitcoin = require("bitcoinjs-lib")
 const gibberish = require("./gibberish-aes.js")
+const gibberishOld = require("./gibberish-aes.2013.04.15.js")
+
+console.log(gibberishOld)
 
 const TIMES=1000
 
@@ -24,7 +27,7 @@ for (var i=0; i<TIMES; i++) {
   var privateKey = keyPair.toWIF();
 
   var password = randPassword(20)
-  var enc = gibberish.enc(privateKey, password)
+  var enc = gibberishOld.enc(privateKey, password)
   var decOssl = null;
   try {
     decOssl = openSSLDec(enc, password)
@@ -36,7 +39,7 @@ for (var i=0; i<TIMES; i++) {
     console.log("Dec", dec)
     throw("Failed")
   }
-  var dec = gibberish.dec(enc, password)
+  var dec = gibberishOld.dec(enc, password)
   if (dec !== privateKey) {
     console.log("Gibberish decryption error")
     console.log("Password:", password)
